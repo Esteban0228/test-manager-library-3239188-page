@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manager Library — préstamos de biblioteca</title>
+  <meta name="description" content="Manager Library: gestión de libros, socios y préstamos construida con Spec-Driven Development, Laravel y React.">
+  <style>
+    :root { --bg:#eef1f4; --panel:#fff; --ink:#17222d; --muted:#5b6b7a; --brand:#1f4e8c; --line:#d3dae1; --bad:#b3261e; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; line-height:1.6; }
+    h1,h2,h3 { font-family:Georgia,"Times New Roman",serif; font-weight:600; line-height:1.2; margin:0 0 .6rem; }
+    a { color:var(--brand); }
+    :focus-visible { outline:3px solid #7fb0f0; outline-offset:2px; }
+    .wrap { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    header.hero { background:var(--ink); color:#fff; padding:3.5rem 0; }
+    .hero .wrap { display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center; }
+    .hero h1 { font-size:clamp(2rem,5vw,3.2rem); }
+    .hero p { color:#cfd8e1; max-width:46ch; }
+    .btn { display:inline-block; background:#fff; color:var(--ink); padding:.6rem 1.1rem; border-radius:6px; text-decoration:none; font-weight:600; margin:.5rem .5rem 0 0; }
+    .btn.alt { background:transparent; color:#fff; border:1px solid #6b7c8c; }
+    .slip { background:#fbfaf6; color:var(--ink); border-radius:4px; padding:1.25rem 1.5rem; box-shadow:0 0 0 1px #c9c4b4; font-family:"Courier New",monospace; font-size:.92rem; }
+    .slip h2 { font-family:Georgia,serif; font-size:1.1rem; border-bottom:2px solid var(--ink); padding-bottom:.4rem; }
+    .slip dl { margin:.5rem 0 0; display:grid; grid-template-columns:auto 1fr; gap:.15rem .8rem; }
+    .slip dt { color:var(--muted); }
+    .slip dd { margin:0; }
+    .slip .due { color:var(--bad); font-weight:700; }
+    section { padding:2.5rem 0; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1rem; }
+    .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:1.1rem 1.25rem; }
+    .card h3 { font-size:1.1rem; }
+    .card p { margin:0; color:var(--muted); }
+    table { width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--line); }
+    th,td { text-align:left; padding:.6rem .8rem; border-bottom:1px solid var(--line); vertical-align:top; }
+    th { color:var(--muted); width:34%; font-weight:600; }
+    .scroll { overflow-x:auto; }
+    pre { background:var(--ink); color:#e7edf3; padding:1rem; border-radius:8px; overflow-x:auto; }
+    footer { padding:2rem 0; color:var(--muted); border-top:1px solid var(--line); font-size:.9rem; }
+    @media (max-width:760px) { .hero .wrap { grid-template-columns:1fr; } header.hero { padding:2.25rem 0; } }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Manager Library</h1>
+        <p>Controla los libros, los socios y los préstamos de una biblioteca. Sin ejemplares duplicados, sin préstamos sin control y con un reporte de lo más leído.</p>
+        <a class="btn" href="#empezar">Cómo ejecutarlo</a>
+        <a class="btn alt" href="#repos">Ver los repositorios</a>
+      </div>
+      <aside class="slip" aria-label="Ejemplo de ficha de préstamo">
+        <h2>Ficha de préstamo</h2>
+        <dl>
+          <dt>Socio</dt><dd>Ana Pérez</dd>
+          <dt>Libro</dt><dd>Gran Jardín 1</dd>
+          <dt>Prestado</dt><dd>6 nov 2026</dd>
+          <dt>Vence</dt><dd class="due">20 nov 2026</dd>
+        </dl>
+      </aside>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="wrap">
+        <h2>Qué hace</h2>
+        <div class="grid">
+          <div class="card"><h3>Catálogo</h3><p>Registra libros con ISBN válido, categoría y ejemplares. Siempre ves cuántos quedan disponibles.</p></div>
+          <div class="card"><h3>Socios</h3><p>Lleva el registro de quién puede pedir prestado, con nombre y documento.</p></div>
+          <div class="card"><h3>Préstamos</h3><p>Presta de 1 a 3 libros a la vez, devuelve cada uno por separado y consulta los vencidos.</p></div>
+          <div class="card"><h3>Reporte</h3><p>El administrador ve qué libros se prestaron más en un rango de fechas.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Reglas que se respetan</h2>
+        <div class="scroll">
+          <table>
+            <tr><th>Plazo</th><td>Cada libro se presta por 14 días.</td></tr>
+            <tr><th>Último ejemplar</th><td>Si dos personas lo piden a la vez, una recibe el préstamo y la otra un 409. Nunca se presta dos veces.</td></tr>
+            <tr><th>Tope por socio</th><td>Un socio no puede tener más de 3 libros prestados.</td></tr>
+            <tr><th>Vencidos</th><td>Un socio con libros vencidos no puede pedir otro hasta devolverlos.</td></tr>
+            <tr><th>Errores</th><td>Toda la API responde los errores con la misma forma: código, mensaje y detalles.</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <h2>Cómo está hecho</h2>
+        <p>El proyecto sigue Spec-Driven Development: primero el spec y su contrato HTTP, después el código. El spec venía en Python y .NET, y se tradujo a Laravel y React sin cambiar el negocio.</p>
+        <div class="grid">
+          <div class="card"><h3>api</h3><p>Laravel, PostgreSQL y JWT. Reglas de negocio en una capa de dominio pura.</p></div>
+          <div class="card"><h3>app</h3><p>React con Vite, servida por nginx.</p></div>
+          <div class="card"><h3>infra</h3><p>Un docker compose levanta el motor vacío, la api y la app.</p></div>
+          <div class="card"><h3>tool</h3><p>Un sembrador que llena datos de demo usando solo la API.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="empezar">
+      <div class="wrap">
+        <h2>Cómo ejecutarlo</h2>
+        <p>Solo necesitas Docker. En el repositorio infra:</p>
+<pre><code>copy .env.example .env
+docker compose up --build</code></pre>
+        <p>Abre <strong>http://localhost:3000</strong> e inicia sesión con el administrador definido en <code>.env</code>.</p>
+      </div>
+    </section>
+
+    <section id="repos">
+      <div class="wrap">
+        <h2>Repositorios</h2>
+        <ul>
+          <li><a href="https://github.com/Esteban0228/test-manager-library-3239188-api">api</a></li>
+          <li><a href="https://github.com/Esteban0228/test-manager-library-3239188-app">app</a></li>
+          <li><a href="https://github.com/Esteban0228/test-manager-library-3239188-infra">infra</a></li>
+          <li><a href="https://github.com/Esteban0228/test-manager-library-3239188-tool">tool</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">Esteban · Aprendiz SENA ADSO, ficha 3239188 · Prueba técnica SDD</div>
+  </footer>
+</body>
+</html>
